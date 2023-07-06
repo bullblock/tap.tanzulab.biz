@@ -1,0 +1,108 @@
+ceip_policy_disclosed: true
+shared:
+  ca_cert_data: ""
+  activateAppLiveViewSecureAccessControl: true
+  kubernetes_version: "1.26.3"
+  ingress_domain: "single.tanzulab.biz"
+  ingress_issuer: "tap-ingress-selfsigned"
+  kubernetes_distribution: ""
+  image_registry:
+    project_path: "tanzulab.azurecr.io/tanzulab/tap"
+    username: "tanzulab"
+    password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+profile: full
+supply_chain: testing_scanning
+
+ootb_supply_chain_testing_scanning:
+  scanning:
+    source:
+      policy: scan-policy
+      template: public-source-scan-template
+    image:
+      policy: scan-policy
+      template: public-image-scan-template
+  git_implementation: libgit2
+  registry:
+    server: ""
+    repository: ""
+  gitops:
+    server_address: "https://dev.azure.com"
+    repository_owner: "xinstevenli/tap-repo"
+    repository_name: "tap-repo"
+    pull_request:
+      server_kind: azure
+    ssh_secret: "git-secret"
+
+contour:
+  infrastructure_provider: azure
+  envoy:
+    service:
+      azure:
+        LBType: nlb
+
+buildservice:
+  kp_default_repository: "tanzulab.azurecr.io/tanzulab/tap/build-service"
+  kp_default_repository_username: "tanzulab"
+  kp_default_repository_password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+  exclude_dependencies: true
+
+tap_gui:
+  tls:
+    namespace: tap-gui
+    secretName: tap-gui-cert
+  metadataStoreAutoconfiguration: true
+  app_config:
+    supplyChain:
+      enablePlugin: true
+    catalog:
+      locations:
+      - type: url
+        target: https://dev.azure.com/xinstevenl/tap-catalog/_apis/git/repositories/tap-catalog/items?path=/catalog-info.yaml&api-version=5.1
+    auth:
+      allowGuestAccess: true
+      environment: development
+      providers:
+        github:
+          development:
+            clientId: "246bf2b23ef0565069d5"
+            clientSecret: "e79628abc026810600aad62c0ca786abd100f903"
+    app:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+    backend:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+      cors:
+        origin: "https://tap-gui.single.tanzulab.biz"
+      database:
+        client: pg
+        connection:
+          host: postgresql.pgdb.svc.cluster.local
+          port: 5432
+          user: pgadmin
+          password: 'P@ssw0rdZaq1!@2wsx'
+          ssl: false
+    proxy:
+      /metadata-store:
+        target: https://metadata-store-app.metadata-store:8443/api/v1
+        changeOrigin: true
+        secure: false
+        headers:
+          Authorization: "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjBjZTBRdDZJS1FqNlZtVlExa0k5OUtCeVVWMkQydGtGckJlRW5UMHphYWsifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtZXRhZGF0YS1zdG9yZSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJtZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJtZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjY4YTg4MGFkLWE4MmYtNDgyMS1iZmZkLWYzMDhhNWU3MWQwZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDptZXRhZGF0YS1zdG9yZTptZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCJ9.uEFn0TKGdDWT6LXNkJl5Lfw4zJCy1j_hkYR5UjvQCTvTPOsDIqKQnOOF7xgEUbn5nqhGcJS6MFIlY_9GA2ZncFjcZX__51hqAk6N886AcVHguKgw-qplGcY5aE1V5CrV6oMz7VeFCZD5BDGUlCl6taSXtOnENIbSpQvY1YRDeNNMMFwmYoMR748_L-rhW_AU7_N7AxVcaYRf8DUCYMgpAlI0a-4ZIPGMlr5fJb-UgcCk9TfSvGW96nPrNUD_DgsQiH8xNhfaEq6HtI0UDcSS_AFfceXYBhnZLIESMgP7TZJXNTC3YEk6gvBk6tadV8IwHZUxbNs0TojSvfPKdop6U2cPpgZiw5-EIa_YBseLaz-cAouN2k1-yM5yATdjznjA-FH3jDyzyRfiRWeGD3y7BiO6EuUT13fG81FSRCIW26hms-rZgQtNI5otk_xVV5A7cxW_qoUFKNsyUitioDIN7ejzS56dnkxhAIYg4IQmW78Dqj8ogAH3-WTkHjH-aKS1fPgCN0bmtZQUdX97yN0YW8WjcsYicH-UbL6pmP7OqrznEnymMTCmYl8W7xsNjfHzdvn_Jd9DmsRIMspjmt5Kahm8AYJy1oDQbNKzjGGd4y3jyuPQPCoVCiRie_xA8azDfyoyGv2nZN-Gpauvqep3sYbHqyqRMZfQvedp1T1xQVU"
+          X-Custom-Source: project-star
+
+metadata_store:
+  ingressEnabled: true
+  ingressDomain: "single.tanzulab.biz"
+  ns_for_export_app_cert: "developer1"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: ""
+
+grype:
+  namespace: "developer1"
+  targetImagePullSecret: "registry-credentials"
+
+policy:
+  tuf_enabled: false
+

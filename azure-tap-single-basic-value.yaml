@@ -1,0 +1,72 @@
+ceip_policy_disclosed: true 
+
+profile: full
+
+supply_chain: basic
+
+ootb_templates:
+  iaas_auth: true
+
+ootb_supply_chain_basic:
+  registry:
+    server: "tanzulab.azurecr.io"
+    repository: tanzulab
+  gitops:
+    ssh_secret: "" 
+
+contour:
+  infrastructure_provider: azure
+  envoy:
+    service:
+      azure:
+        LBType: nlb
+
+buildservice:
+  kp_default_repository: "tanzulab.azurecr.io/tanzulab/tanzu-build-service"
+  kp_default_repository_secret:
+    name: registry-credentials
+    namespace: "developer1"
+  enable_automatic_dependency_updates: false          
+  exclude_dependencies: true
+
+learningcenter:
+  ingressDomain: "single.tanzulab.biz"
+
+ootb_delivery_basic:
+  service_account: default
+
+tap_gui:
+  tls:
+    namespace: tap-gui
+    secretName: tap-gui-cert
+  metadataStoreAutoconfiguration: true
+  ingressEnabled: true
+  ingressDomain: "single.tanzulab.biz"
+  app_config:
+    supplyChain:
+      enablePlugin: true
+    auth:
+      allowGuestAccess: true
+    backend:
+      baseUrl: https://tap-gui.single.tanzulab.biz
+      cors:
+        origin: https://tap-gui.single.tanzulab.biz
+    app:
+      baseUrl: https://tap-gui.single.tanzulab.biz
+
+metadata_store:
+  ingressEnabled: true
+  ingressDomain: "single.tanzulab.biz"
+  app_service_type: ClusterIP
+  ns_for_export_app_cert: "developer1"
+
+scanning:
+  metadataStore:
+    url: ""
+
+accelerator:
+  server:
+    service_type: "ClusterIP"
+
+cnrs:
+  domain_name: "single.tanzulab.biz"

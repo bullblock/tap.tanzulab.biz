@@ -1,0 +1,88 @@
+shared:
+  ingress_domain: "single.tanzulab.biz"
+  ingress_issuer: "tap-ingress-selfsigned"
+  image_registry:
+    project_path: "ghcr.io/bullblock/tap"
+    username: "bullblock"
+    password: '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'
+  kubernetes_version: "1.26.3"
+  activateAppLiveViewSecureAccessControl: true
+
+ceip_policy_disclosed: TRUE
+
+profile: full
+
+supply_chain: basic
+
+ootb_supply_chain_basic:
+  registry:
+    server: "ghcr.io"
+    repository: "bullblock/tap/supply-chain"
+  gitops:
+    ssh_secret: ""
+
+contour:
+  infrastructure_provider: azure
+  envoy:
+    service:
+      azure:
+        LBType: nlb
+
+buildservice:
+  kp_default_repository: "ghcr.io/bullblock/tap/build-service"
+  kp_default_repository_username: "bullblock"
+  kp_default_repository_password: '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'
+  exclude_dependencies: true
+
+tap_gui:
+  tls:
+    namespace: tap-gui
+    secretName: tap-gui-cert
+  metadataStoreAutoconfiguration: true
+  app_config:
+    supplyChain:
+      enablePlugin: true
+    catalog:
+      locations:
+      - type: url
+        target: https://raw.githubusercontent.com/bullblock/tap-catalog/main/catalog-info.yaml
+    auth:
+      allowGuestAccess: true
+      environment: development
+      providers:
+        github:
+          development:
+            clientId: "246bf2b23ef0565069d5"
+            clientSecret: "e79628abc026810600aad62c0ca786abd100f903"
+    app:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+    backend:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+      cors:
+        origin: "https://tap-gui.single.tanzulab.biz"
+      database:
+        client: pg
+        connection:
+          host: postgresql.pgdb.svc.cluster.local
+          port: 5432
+          user: pgadmin
+          password: 'P@ssw0rdZaq1!@2wsx'
+          ssl: false
+
+metadata_store:
+  ingressEnabled: true
+  ingressDomain: "single.tanzulab.biz"
+  ns_for_export_app_cert: "default"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: ""
+
+grype:
+  namespace: "default"
+  targetImagePullSecret: "registry-credentials"
+
+policy:
+  tuf_enabled: false
+

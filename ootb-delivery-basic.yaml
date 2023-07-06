@@ -1,0 +1,9 @@
+reogistry:
+  server: "tanzulab.azurecr.io"
+  repository: "tanzulab/tap"
+git_implementation: 
+gitops:
+  server_address: "https://dev.azure.com/xinstevenl"
+  repository_name: "tanzulab/tap"
+
+

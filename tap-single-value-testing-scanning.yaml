@@ -1,0 +1,95 @@
+ceip_policy_disclosed: true
+shared:
+  ca_cert_data: ""
+  activateAppLiveViewSecureAccessControl: true
+  kubernetes_version: "1.26.3"
+  ingress_domain: "single.tanzulab.biz"
+  ingress_issuer: "tap-ingress-selfsigned"
+  kubernetes_distribution: ""
+  image_registry:
+    project_path: "tanzulab.azurecr.io/tanzulab/tap"
+    username: "tanzulab"
+    password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+profile: full
+
+supply_chain: basic
+ootb_supply_chain_basic:
+  registry:
+    server: "tanzulab.azurecr.io"
+    repository: "tanzulab"
+  gitops:
+    ssh_secret: ""
+
+contour:
+  infrastructure_provider: azure
+  envoy:
+    service:
+      azure:
+        LBType: nlb
+
+buildservice:
+  kp_default_repository: "tanzulab.azurecr.io/tanzulab/tap/build-service"
+  kp_default_repository_username: "tanzulab"
+  kp_default_repository_password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+  exclude_dependencies: true
+
+tap_gui:
+  tls:
+    namespace: tap-gui
+    secretName: tap-gui-cert
+  metadataStoreAutoconfiguration: true
+  app_config:
+    supplyChain:
+      enablePlugin: true
+    catalog:
+      locations:
+      - type: url
+        target: https://dev.azure.com/xinstevenl/tap-catalog/_apis/git/repositories/tap-catalog/items?path=/catalog-info.yaml&api-version=5.1
+    auth:
+      allowGuestAccess: true
+      environment: development
+      providers:
+        github:
+          development:
+            clientId: "246bf2b23ef0565069d5"
+            clientSecret: "e79628abc026810600aad62c0ca786abd100f903"
+    app:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+    backend:
+      baseUrl: "https://tap-gui.single.tanzulab.biz"
+      cors:
+        origin: "https://tap-gui.single.tanzulab.biz"
+      database:
+        client: pg
+        connection:
+          host: postgresql.pgdb.svc.cluster.local
+          port: 5432
+          user: pgadmin
+          password: 'P@ssw0rdZaq1!@2wsx'
+          ssl: false
+    proxy:
+      /metadata-store:
+        target: https://metadata-store-app.metadata-store:8443/api/v1
+        changeOrigin: true
+        secure: false
+        headers:
+          Authorization: "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjBjZTBRdDZJS1FqNlZtVlExa0k5OUtCeVVWMkQydGtGckJlRW5UMHphYWsifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtZXRhZGF0YS1zdG9yZSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJtZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJtZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6Ijc5YmY5NDA2LWIzYjktNDUzNy1iOGFiLWU1ZTRjMzk5NmVmMiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDptZXRhZGF0YS1zdG9yZTptZXRhZGF0YS1zdG9yZS1yZWFkLXdyaXRlLWNsaWVudCJ9.Es0F4XwV7Anc9ivUmWU7htXjqE1B6usMhmbwoDnJW0fTrHyEm4BaqCYBS36iAz1U4XfHbhWs1XnDkfuz-G-vEvlT938FORuWdrbppuvQ7kgSMNw4rT5qC5LCJ0qPjPEdy_AxBE1vWLHd8owuCSSHaWdlY03huOYfqsFGZs3L3TaEo1RlW3USBedjPLGGJ6KOCAGon8Ub6VnA5vjXDDD0s_w_qtL9J5m2rXtbxXV9kr6g51DvdbSNy0RMtIbJXq2P0U8ir5xxaxcGjO4Bjxs1WQugCc0w7QFLSQWRnJglho_NQlSw4mASucoz31WZJurE-n6duc9Pg04O5n9smoBNNBwL5t8QIIJA84skiLahEXVQ7mm4_8_sOvfaxwq884Tt9SAOcAc67v8Km-BaCPwXwhc-yrLrnu10rRSE8JfU6xAvydFL6PBJUTWLwUmK8faERZAA5ZbCrS3M-ektkDbKe8f0M3YsHibnCPHNK_afbK4NYNcwyaiKOuJKiDNfCq3ea1XQsRcRBr9V8WE0RhkXoU8jlBL3rytq3vbROxg4GhniLANtsolPY9sK8VG_tsvvTm7M9_wd8EXRvmxnNma85opyyiVZK5dIPYap8xtxyRJz-HUiVwVyBFNgXdpEK3_8NapI8VfsTg-USSSR0iJ2byE53pE6r7c3ZNyeMtVHUZU"
+          X-Custom-Source: project-star
+
+metadata_store:
+  ingressEnabled: true
+  ingressDomain: "single.tanzulab.biz"
+  ns_for_export_app_cert: "*"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: ""
+
+grype:
+  namespace: "developer1"
+  targetImagePullSecret: "registry-credentials"
+
+policy:
+  tuf_enabled: false
+

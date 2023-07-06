@@ -1,0 +1,12 @@
+shared:
+  ingress_domain: "single.tanzulab.biz"
+  ingress_issuer: "tap-ingress-selfsigned"
+  image_registry:
+    project_path: "ghcr.io/bullblock/tap"
+    username: "bullblock"
+    password: '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'
+  kubernetes_distribution: ""
+  kubernetes_version: "1.26.3"
+
+ceip_policy_disclosed: true
+
