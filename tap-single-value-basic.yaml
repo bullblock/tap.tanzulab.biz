@@ -2,9 +2,9 @@ shared:
   ingress_domain: "single.tanzulab.biz"
   ingress_issuer: "tap-ingress-selfsigned"
   image_registry:
-    project_path: "ghcr.io/bullblock/tap"
-    username: "bullblock"
-    password: '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'
+    project_path: "tanzulab.azurecr.io/tanzulab/tap"
+    username: "xinstevenl"
+    password: 'IXvDMTM7A80OUUF3RrA7pwk/t7FBnYP2sF7TxAud+1+ACRDipY7i'
   kubernetes_version: "1.26.3"
   activateAppLiveViewSecureAccessControl: true
 
@@ -16,8 +16,8 @@ supply_chain: basic
 
 ootb_supply_chain_basic:
   registry:
-    server: "ghcr.io"
-    repository: "bullblock/tap/supply-chain"
+    server: "tanzulab.azurecr.io"
+    repository: "tanzulab/tap/supply-chain"
   gitops:
     ssh_secret: ""
 
@@ -29,9 +29,9 @@ contour:
         LBType: nlb
 
 buildservice:
-  kp_default_repository: "ghcr.io/bullblock/tap/build-service"
-  kp_default_repository_username: "bullblock"
-  kp_default_repository_password: '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'
+  kp_default_repository: "tanzulab.azurecr.io/tanzulab/tap/build-service"
+  kp_default_repository_username: "xinstevenl"
+  kp_default_repository_password: 'IXvDMTM7A80OUUF3RrA7pwk/t7FBnYP2sF7TxAud+1+ACRDipY7i'
   exclude_dependencies: true
 
 tap_gui:
