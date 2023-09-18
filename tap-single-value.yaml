@@ -22,11 +22,10 @@ ootb_supply_chain_basic:
     ssh_secret: ""
 
 contour:
-  infrastructure_provider: azure
   envoy:
     service:
       azure:
-        LBType: nlb
+        LBType: LoadBalancer
 
 buildservice:
   kp_default_repository: "tanzulab.azurecr.io/tanzulab/tap/build-service"
