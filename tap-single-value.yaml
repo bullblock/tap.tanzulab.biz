@@ -2,11 +2,60 @@ shared:
   ingress_domain: "single.tanzulab.biz"
   ingress_issuer: "tap-ingress-selfsigned"
   image_registry:
-    project_path: "ghcr.io/bullblock/tap"
-    username: "bullblock"
-    password: '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'
-  kubernetes_distribution: ""
-  kubernetes_version: "1.26.3"
+    project_path: "tanzulab.azurecr.io/tanzulab/tap"
+    username: "tanzulab"
+    password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+  kubernetes_version: "1.27.3"
+  activateAppLiveViewSecureAccessControl: true
 
-ceip_policy_disclosed: true
+ceip_policy_disclosed: TRUE
+
+profile: full
+
+supply_chain: basic
+
+ootb_supply_chain_basic:
+  registry:
+    server: "tanzulab.azurecr.io"
+    repository: "tanzulab/tap/supply-chain"
+  gitops:
+    ssh_secret: ""
+
+contour:
+  infrastructure_provider: azure
+  envoy:
+    service:
+      azure:
+        LBType: nlb
+
+buildservice:
+  kp_default_repository: "tanzulab.azurecr.io/tanzulab/tap/build-service"
+  kp_default_repository_username: "tanzulab"
+  kp_default_repository_password: 'KEt7wlxb9URk4vtWemEX2R9aazH/XYYUDnY2N4p9Bm+ACRCtufQp'
+  exclude_dependencies: true
+
+tap_gui:
+  metadataStoreAutoconfiguration: true
+  app_config:
+    auth:
+      allowGuestAccess: true
+    catalog:
+      locations:
+      - type: url
+        target: https://raw.githubusercontent.com/bullblock/tap-catalog/main/catalog-info.yaml
+
+metadata_store:
+  ns_for_export_app_cert: "default"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: ""
+
+grype:
+  namespace: "default"
+  targetImagePullSecret: "registry-credentials"
+
+policy:
+  tuf_enabled: false
 
